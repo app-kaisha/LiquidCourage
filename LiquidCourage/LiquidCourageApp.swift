@@ -13,6 +13,9 @@ struct LiquidCourageApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    Thread.sleep(forTimeInterval: 3)
+                }
         }
     }
 }
