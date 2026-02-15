@@ -26,6 +26,8 @@ struct HomeView: View {
                         Divider(), alignment: .bottom
                     )
                 
+                CardView()
+                
                 Spacer()
             }
             .padding(8)
