@@ -17,7 +17,6 @@ struct ChatPreviewCell: View {
     var lastChatMessage: String? = "This is the last message and it might extend to mulitple lines."
     var isYourMove: Bool = true
     
-    
     var body: some View {
         HStack(spacing: 15.0) {
             
@@ -46,8 +45,6 @@ struct ChatPreviewCell: View {
                                     .fill(.appYellow.gradient)
                             }
                     }
-                    
-                        
                 }
                 if let lastChatMessage {
                     Text(lastChatMessage)
@@ -56,7 +53,6 @@ struct ChatPreviewCell: View {
                         .lineLimit(1)
                         .padding(.trailing, 16)
                 }
-                
             }
         }
     }

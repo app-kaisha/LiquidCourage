@@ -178,7 +178,6 @@ struct HomeView: View {
             Image(systemName: "slider.horizontal.3")
                 .background(.black.opacity(0.001))
                 .onTapGesture {
-                    
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
             
