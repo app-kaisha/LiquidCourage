@@ -22,48 +22,38 @@ struct HomeView: View {
         ZStack {
             Color.appWhite
                 .ignoresSafeArea()
-            
-            VStack(spacing: 12.0) {
-                header
-                
-                FilterView(options: filters, selection: $selectedFilter)
-                    .background(
-                        Divider(), alignment: .bottom
-                    )
-                
-                ZStack {
-                    if !allUsers.isEmpty {
-                        ForEach(Array(allUsers.enumerated()), id: \.offset) { (index, user) in
+            ZStack {
+                if !allUsers.isEmpty {
+                    ForEach(Array(allUsers.enumerated()), id: \.offset) { (index, user) in
+                        
+                        let isPrevious = (selectedIndex - 1) == index
+                        let isCurrent = selectedIndex == index
+                        let isNext = (selectedIndex + 1) == index
+                        
+                        if isPrevious || isCurrent || isNext{
                             
-                            let isPrevious = (selectedIndex - 1) == index
-                            let isCurrent = selectedIndex == index
-                            let isNext = (selectedIndex + 1) == index
-                            
-                            if isPrevious || isCurrent || isNext{
-                                
-                                let offsetValue = cardOffsets[user.id]
-                                userProfileCell(user: user, index: index)
-                                    .zIndex(Double(allUsers.count - index))
-                                    .offset(x: offsetValue == nil ? 0 : offsetValue == true ? 900 : -900)
-                            }
+                            let offsetValue = cardOffsets[user.id]
+                            userProfileCell(user: user, index: index)
+                                .zIndex(Double(allUsers.count - index))
+                                .offset(x: offsetValue == nil ? 0 : offsetValue == true ? 900 : -900)
                         }
-                    } else {
-                        ProgressView()
                     }
-                    
-                    overlaySwipingIndictors
-                        .zIndex(999)
+                } else {
+                    ProgressView()
                 }
-                .frame(maxHeight: .infinity)
-                .padding(4)
-                .animation(.smooth,value: cardOffsets)
+                
+                overlaySwipingIndictors
+                    .zIndex(999)
             }
-            .padding(8)
+            .frame(maxHeight: .infinity)
+            .animation(.smooth,value: cardOffsets)
+            .task {
+                await getData()
+            }
+            .toolbarVisibility(.hidden, for: .navigationBar)
         }
-        .task {
-            await getData()
-        }
-        .toolbarVisibility(.hidden, for: .navigationBar)
+        
+        
     }
     
     private func getData() async {
@@ -145,46 +135,6 @@ struct HomeView: View {
             
         }
         .animation(.smooth,value: currentSwipeOffset)
-    }
-    
-    
-    private var header: some View {
-        HStack(spacing: 0.0) {
-            HStack(spacing: 0.0) {
-                Image(systemName: "line.horizontal.3")
-                    .background(.black.opacity(0.001))
-                    .onTapGesture {
-                        
-                    }
-                
-                Image(systemName: "arrow.uturn.left")
-                    .background(.black.opacity(0.001))
-                    .onTapGesture {
-                        
-                    }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            
-            
-            Text("LiquidCourage")
-                .font(.title)
-                .foregroundStyle(.appYellow)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-            
-            
-            
-            Image(systemName: "slider.horizontal.3")
-                .background(.black.opacity(0.001))
-                .onTapGesture {
-                }
-                .frame(maxWidth: .infinity, alignment: .trailing)
-            
-        }
-        .font(.title2)
-        .fontWeight(.medium)
-        .foregroundStyle(.appBlack)
     }
 }
 
